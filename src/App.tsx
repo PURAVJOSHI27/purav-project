@@ -1,54 +1,53 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { useAuthStore } from './store/authStore';
-import { Auth } from './pages/Auth';
-import { ChatLayout } from './components/chat/ChatLayout';
-import { FriendsList } from './components/chat/FriendsList';
-import { ChatWindow } from './components/chat/ChatWindow';
-import { DebugAuth } from './components/DebugAuth';
+import { useEffect } from 'react';
+import { useAuth } from './hooks/useAuth';
+import { AuthScreen } from './components/auth/AuthScreen';
+import { HomePage } from './components/layout/HomePage';
+import { LoadingScreen } from './components/common/LoadingSpinner';
+import { SoundService } from './services/firebase';
 
-const App: React.FC = () => {
-  const { user, loading } = useAuthStore();
-  
-  // Check for redirect result on app load
+function App() {
+  const { user, loading, error, signIn, signOut, isAuthenticated } = useAuth();
+
+  // Initialize sound service
   useEffect(() => {
-    console.log('App: Component mounted, checking for redirect result');
-    useAuthStore.getState().checkRedirectResult();
+    SoundService.initialize();
+    
+    // Resume audio context on first user interaction
+    const handleFirstInteraction = () => {
+      SoundService.resumeAudioContext();
+      document.removeEventListener('click', handleFirstInteraction);
+      document.removeEventListener('keydown', handleFirstInteraction);
+    };
+    
+    document.addEventListener('click', handleFirstInteraction);
+    document.addEventListener('keydown', handleFirstInteraction);
+    
+    return () => {
+      document.removeEventListener('click', handleFirstInteraction);
+      document.removeEventListener('keydown', handleFirstInteraction);
+    };
   }, []);
-  
-  console.log('App: Current state', { user: !!user, loading });
-  
+
   if (loading) {
+    return <LoadingScreen />;
+  }
+
+  if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="mt-4 text-slate-600">Loading...</p>
-        </div>
-      </div>
+      <AuthScreen 
+        onSignIn={signIn}
+        loading={loading}
+        error={error}
+      />
     );
   }
 
   return (
-    <Router>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/login" element={user ? <Navigate to="/chat" /> : <Auth />} />
-        
-        {/* Protected chat routes */}
-        <Route path="/chat" element={user ? <ChatLayout /> : <Navigate to="/login" />}>
-          {/* Friends list (default chat view) */}
-          <Route index element={<FriendsList />} />
-          {/* Individual chat window */}
-          <Route path=":friendId" element={<ChatWindow />} />
-        </Route>
-        
-        {/* Default redirect */}
-        <Route path="*" element={<Navigate to={user ? "/chat" : "/login"} />} />
-      </Routes>
-      <DebugAuth />
-    </Router>
+    <HomePage 
+      user={user!}
+      onSignOut={signOut}
+    />
   );
-};
+}
 
 export default App;

@@ -5,58 +5,50 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#ffe6e6',
-          100: '#ffcccc',
-          200: '#ff9999',
-          300: '#ff6666',
-          400: '#ff3333',
-          500: '#ff0000',
-          600: '#cc0000',
-          700: '#990000',
-          800: '#660000',
-          900: '#330000',
-          950: '#1a0000',
-        },
-        secondary: {
           50: '#f0f9ff',
           100: '#e0f2fe',
           200: '#bae6fd',
           300: '#7dd3fc',
           400: '#38bdf8',
-          500: '#0ea5e9',
+          500: '#87CEEB', // Sky blue
           600: '#0284c7',
           700: '#0369a1',
           800: '#075985',
           900: '#0c4a6e',
         },
-        success: {
-          500: '#10b981',
-        },
-        warning: {
-          500: '#f59e0b',
-        },
-        error: {
-          500: '#ef4444',
-        },
-      },
-      fontFamily: {
-        sans: ['Poppins', 'sans-serif'],
-      },
-      animation: {
-        'heart-beat': 'heartBeat 1.3s ease-in-out',
-      },
-      keyframes: {
-        heartBeat: {
-          '0%': { transform: 'scale(1)' },
-          '14%': { transform: 'scale(1.3)' },
-          '28%': { transform: 'scale(1)' },
-          '42%': { transform: 'scale(1.3)' },
-          '70%': { transform: 'scale(1)' },
+        secondary: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
         }
       },
-      boxShadow: {
-        'message': '0 2px 10px rgba(0, 0, 0, 0.05)',
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'bounce-light': 'bounceLight 0.6s ease-in-out',
       },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        bounceLight: {
+          '0%, 20%, 50%, 80%, 100%': { transform: 'translateY(0)' },
+          '40%': { transform: 'translateY(-5px)' },
+          '60%': { transform: 'translateY(-3px)' },
+        }
+      }
     },
   },
   plugins: [],
