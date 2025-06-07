@@ -12,27 +12,32 @@ export const LoginForm: React.FC = () => {
 
   // Redirect if user is already authenticated
   useEffect(() => {
+    console.log('LoginForm: Auth state changed', { user: !!user, loading });
     if (user && !loading) {
-      navigate('/chat');
+      console.log('LoginForm: Redirecting to chat');
+      navigate('/chat', { replace: true });
     }
   }, [user, loading, navigate]);
 
   const handleGoogleSignIn = async () => {
-    if (isLoading) return;
+    if (isLoading || loading) return;
     
     setIsLoading(true);
     setError(null);
     
     try {
+      console.log('LoginForm: Starting Google sign in');
       const { error } = await signInWithGoogle();
       
       if (error) {
+        console.error('LoginForm: Sign in error', error);
         setError(error.message || 'Failed to sign in with Google');
+        setIsLoading(false);
       }
-      // Don't navigate here - the redirect will happen automatically
+      // For redirect flow, the page will redirect to Google and then back
     } catch (err) {
+      console.error('LoginForm: Unexpected error', err);
       setError('An unexpected error occurred');
-    } finally {
       setIsLoading(false);
     }
   };

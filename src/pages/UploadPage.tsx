@@ -2,8 +2,8 @@ import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import { motion } from 'framer-motion';
-import { useAuthStore } from '../stores/authStore';
-import { usePhotoStore } from '../stores/photoStore';
+import { useAuthStore } from '../store/authStore';
+import { usePhotoStore } from '../store/photoStore';
 import { Upload, X, Image, Check } from 'lucide-react';
 
 const UploadPage: React.FC = () => {

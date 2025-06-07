@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useAuthStore } from '../stores/authStore';
-import { usePhotoStore } from '../stores/photoStore';
+import { useAuthStore } from '../store/authStore';
+import { usePhotoStore } from '../store/photoStore';
 import { User, Images, Calendar, Heart, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
@@ -52,10 +52,10 @@ const ProfilePage: React.FC = () => {
         >
           <div className="flex flex-col sm:flex-row items-center">
             <div className="mb-4 sm:mb-0 sm:mr-6">
-              {user?.avatar ? (
+              {user?.avatar_url ? (
                 <img 
-                  src={user.avatar} 
-                  alt={user.name}
+                  src={user.avatar_url} 
+                  alt={user.username}
                   className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md"
                 />
               ) : (
@@ -66,8 +66,8 @@ const ProfilePage: React.FC = () => {
             </div>
             
             <div className="text-center sm:text-left flex-grow">
-              <h1 className="text-2xl font-bold text-gray-900">{user?.name}</h1>
-              <p className="text-gray-500 mt-1">{user?.username}</p>
+              <h1 className="text-2xl font-bold text-gray-900">{user?.username}</h1>
+              <p className="text-gray-500 mt-1">{user?.email}</p>
             </div>
           </div>
           

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuthStore } from '../../stores/authStore';
+import { useAuthStore } from '../../store/authStore';
 import { Home, Images, Upload, User, LogOut, Menu, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Navbar: React.FC = () => {
   const { pathname } = useLocation();
-  const { user, logout } = useAuthStore();
+  const { user, signOut } = useAuthStore();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const navItems = [
@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
             ))}
             
             <button
-              onClick={logout}
+              onClick={signOut}
               className="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors duration-150"
             >
               <LogOut size={20} className="mr-1.5" />
@@ -60,14 +60,14 @@ const Navbar: React.FC = () => {
           {/* User info - Desktop */}
           <div className="hidden md:flex items-center">
             <div className="flex items-center space-x-3">
-              {user?.avatar && (
-                <img
-                  src={user.avatar}
-                  alt={`${user.name}'s avatar`}
+              {user?.avatar_url && (
+                <img 
+                  src={user.avatar_url}
+                  alt={`${user.username}'s avatar`}
                   className="w-8 h-8 rounded-full object-cover"
                 />
               )}
-              <span className="text-sm font-medium">{user?.name}</span>
+              <span className="text-sm font-medium">{user?.username}</span>
             </div>
           </div>
           
@@ -107,7 +107,7 @@ const Navbar: React.FC = () => {
             ))}
             
             <button
-              onClick={() => { closeMobileMenu(); logout(); }}
+              onClick={() => { closeMobileMenu(); signOut(); }}
               className="w-full flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:bg-gray-100"
             >
               <LogOut size={20} className="mr-2" />
@@ -116,14 +116,14 @@ const Navbar: React.FC = () => {
             
             {/* User info - Mobile */}
             <div className="flex items-center px-3 py-2 mt-4 border-t border-gray-200">
-              {user?.avatar && (
+              {user?.avatar_url && (
                 <img
-                  src={user.avatar}
-                  alt={`${user.name}'s avatar`}
+                  src={user.avatar_url}
+                  alt={`${user.username}'s avatar`}
                   className="w-8 h-8 rounded-full object-cover mr-2"
                 />
               )}
-              <span className="text-sm font-medium">{user?.name}</span>
+              <span className="text-sm font-medium">{user?.username}</span>
             </div>
           </div>
         </motion.div>

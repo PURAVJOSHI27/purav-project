@@ -6,7 +6,7 @@ export type Photo = {
   url: string;
   title: string;
   description?: string;
-  uploadedBy: number;
+  uploadedBy: string; // Changed from number to string to match Firebase auth
   uploadedAt: string;
   likes: number;
   comments: Comment[];
@@ -14,7 +14,7 @@ export type Photo = {
 
 export type Comment = {
   id: string;
-  userId: number;
+  userId: string; // Changed from number to string to match Firebase auth
   text: string;
   createdAt: string;
 };
@@ -28,25 +28,25 @@ interface PhotoState {
   error: string | null;
   addPhoto: (photo: Omit<Photo, 'id' | 'uploadedAt' | 'likes' | 'comments'>) => void;
   likePhoto: (photoId: string) => void;
-  addComment: (photoId: string, userId: number, text: string) => void;
+  addComment: (photoId: string, userId: string, text: string) => void;
   deletePhoto: (photoId: string) => void;
   initPhotos: () => void;
 }
 
-// Some sample photos to start with
+// Some sample photos to start with (using mock user IDs for compatibility)
 const samplePhotos: Photo[] = [
   {
     id: 'photo1',
     url: 'https://images.pexels.com/photos/1447092/pexels-photo-1447092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     title: 'Sunset at the beach',
     description: 'Remember our trip last summer?',
-    uploadedBy: 1,
+    uploadedBy: 'user1',
     uploadedAt: '2023-06-15T18:30:00Z',
     likes: 1,
     comments: [
       {
         id: 'comment1',
-        userId: 2,
+        userId: 'user2',
         text: 'This was such a beautiful day!',
         createdAt: '2023-06-15T19:00:00Z'
       }
@@ -57,13 +57,13 @@ const samplePhotos: Photo[] = [
     url: 'https://images.pexels.com/photos/2174656/pexels-photo-2174656.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     title: 'Dinner date',
     description: 'That amazing Italian restaurant',
-    uploadedBy: 2,
+    uploadedBy: 'user2',
     uploadedAt: '2023-07-20T20:15:00Z',
     likes: 1,
     comments: [
       {
         id: 'comment2',
-        userId: 1,
+        userId: 'user1',
         text: 'We should go back there soon!',
         createdAt: '2023-07-20T21:00:00Z'
       }
@@ -74,7 +74,7 @@ const samplePhotos: Photo[] = [
     url: 'https://images.pexels.com/photos/1262302/pexels-photo-1262302.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     title: 'Hiking adventure',
     description: 'That challenging trail we conquered',
-    uploadedBy: 1,
+    uploadedBy: 'user1',
     uploadedAt: '2023-08-05T14:20:00Z',
     likes: 1,
     comments: []
@@ -84,13 +84,13 @@ const samplePhotos: Photo[] = [
     url: 'https://images.pexels.com/photos/1714455/pexels-photo-1714455.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     title: 'Coffee date',
     description: 'Our favorite cafe',
-    uploadedBy: 2,
+    uploadedBy: 'user2',
     uploadedAt: '2023-09-12T09:45:00Z',
     likes: 1,
     comments: [
       {
         id: 'comment3',
-        userId: 1,
+        userId: 'user1',
         text: 'Their lattes are the best!',
         createdAt: '2023-09-12T10:30:00Z'
       }
@@ -101,7 +101,7 @@ const samplePhotos: Photo[] = [
     url: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     title: 'Concert night',
     description: 'Front row seats!',
-    uploadedBy: 1,
+    uploadedBy: 'user1',
     uploadedAt: '2023-10-30T21:00:00Z',
     likes: 1,
     comments: []

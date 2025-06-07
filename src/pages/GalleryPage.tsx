@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { usePhotoStore, type Photo } from '../stores/photoStore';
-import { useAuthStore } from '../stores/authStore';
+import { usePhotoStore, type Photo } from '../store/photoStore';
+import { useAuthStore } from '../store/authStore';
 import { Heart, MessageCircle, Filter, Search, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 

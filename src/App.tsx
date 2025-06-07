@@ -5,14 +5,18 @@ import { Auth } from './pages/Auth';
 import { ChatLayout } from './components/chat/ChatLayout';
 import { FriendsList } from './components/chat/FriendsList';
 import { ChatWindow } from './components/chat/ChatWindow';
+import { DebugAuth } from './components/DebugAuth';
 
 const App: React.FC = () => {
   const { user, loading } = useAuthStore();
   
-  // Fetch user on app load
+  // Check for redirect result on app load
   useEffect(() => {
-    useAuthStore.getState().fetchUser();
+    console.log('App: Component mounted, checking for redirect result');
+    useAuthStore.getState().checkRedirectResult();
   }, []);
+  
+  console.log('App: Current state', { user: !!user, loading });
   
   if (loading) {
     return (
@@ -42,6 +46,7 @@ const App: React.FC = () => {
         {/* Default redirect */}
         <Route path="*" element={<Navigate to={user ? "/chat" : "/login"} />} />
       </Routes>
+      <DebugAuth />
     </Router>
   );
 };
