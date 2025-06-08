@@ -1,63 +1,65 @@
+// User Types
 export interface User {
-  id: string;
+  uid: string;
   email: string;
-  username: string;
-  avatar_url?: string;
-  created_at: string;
+  displayName: string;
+  photoURL?: string;
+  isOnline: boolean;
+  lastSeen: Date;
+  createdAt: Date;
 }
 
-export interface Profile {
+// Friend Request Types
+export interface FriendRequest {
   id: string;
-  user_id: string;
-  display_name?: string;
-  bio?: string;
-  theme_preference?: string;
-  notification_settings?: NotificationSettings;
+  fromUserId: string;
+  toUserId: string;
+  fromUser: User;
+  status: 'pending' | 'accepted' | 'rejected';
+  createdAt: Date;
 }
 
-export interface NotificationSettings {
-  sound_enabled: boolean;
-  desktop_notifications: boolean;
-  email_notifications: boolean;
-}
-
-export interface Message {
-  id: string;
-  conversation_id: string;
-  sender_id: string;
-  content: string;
-  is_encrypted: boolean;
-  attachment_url?: string;
-  attachment_type?: string;
-  created_at: string;
-  read_at?: string;
-}
-
+// Conversation Types
 export interface Conversation {
   id: string;
-  created_at: string;
-  updated_at: string;
-  last_message?: string;
-  last_message_at?: string;
-  participants: User[];
+  participants: string[];
+  participantDetails: User[];
+  messages?: Message[]; // Optional since we use subcollections
+  lastMessage?: Message;
+  lastMessageAt: Date;
+  unreadCount: Record<string, number>;
+  createdAt: Date;
 }
 
+// Message Types (optimized for subcollection storage)
+export interface Message {
+  id: string;
+  senderId: string;
+  senderName: string;
+  senderPhotoURL?: string;
+  content: string;
+  type: 'text' | 'image' | 'video' | 'audio' | 'file';
+  fileUrl?: string;
+  fileName?: string;
+  fileSize?: number;
+  fileMimeType?: string;
+  readBy: string[];
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
+// Auth Types
 export interface AuthState {
   user: User | null;
-  session: any | null;
   loading: boolean;
   error: string | null;
 }
 
-export interface ConversationState {
+// Chat Types
+export interface ChatState {
   conversations: Conversation[];
-  activeConversation: Conversation | null;
-  loading: boolean;
-  error: string | null;
-}
-
-export interface MessagesState {
-  messages: Record<string, Message[]>;
+  currentConversation: Conversation | null;
+  messages: Message[];
   loading: boolean;
   error: string | null;
 }
